@@ -34,33 +34,25 @@ export class DemoComponent implements OnInit {
       js.src = 'https://connect.facebook.net/en_US/sdk.js';
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-
   }
 
   submitLogin() {
-    FB.login((response) => {
-      console.log('submitLogin', response);
-      if (response.authResponse) {
-        this.getInfo(response.authResponse.userID);
-        //login success
-        //login success code here
-        //redirect to home page
-      } else {
-        console.log('User login failed');
-      }
+    let self = this;
+    FB.login(function(response) {
+      console.log(response);
+      self.getInfo();
     });
+    let x = document.cookie;
+    console.log(x);
   }
 
-  getInfo(id) {
+  getInfo() {
     FB.api(
-      `/100013636536165`,
+      '/me',
       'GET',
-      {'fields': 'id,name'},
+      {},
       function(response) {
-        if (response && !response.error) {
-          /* handle the result */
-          console.log('response:' + response.name);
-        }
+        console.log(response);
       }
     );
   }
